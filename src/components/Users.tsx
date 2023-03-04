@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import Albums from './Albums';
 import { Id } from '../types/users';
+import Loader from './Loader';
 
 const Users: FC = () => {
   const dispatch = useAppDispatch();
-  const { users, usersError } = useAppSelector(state => state.users);
+  const { users, usersError, isUsersLoading } = useAppSelector(state => state.users);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<Id | null>(null);
 
@@ -19,6 +20,8 @@ const Users: FC = () => {
   useEffect(() => {
     if (usersError) console.error(usersError);
   }, [usersError]);
+
+  if (isUsersLoading) return <Loader />;
 
   return (
     <>

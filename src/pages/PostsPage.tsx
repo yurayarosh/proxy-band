@@ -1,12 +1,13 @@
 import { FC, useEffect } from 'react';
 import { useParams } from 'react-router';
+import Loader from '../components/Loader';
 import { useAppDispatch, useAppSelector } from '../store';
 import { setPosts } from '../store/slices/users';
 import { fetchPosts } from '../store/slices/users/actions';
 
 const PostsPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { posts, postsError } = useAppSelector(state => state.users);
+  const { posts, postsError, isPostsLoading } = useAppSelector(state => state.users);
 
   const { id } = useParams();
 
@@ -27,6 +28,8 @@ const PostsPage: FC = () => {
   useEffect(() => {
     if (postsError) console.error(postsError);
   }, [postsError]);
+
+  if (isPostsLoading) return <Loader />;
 
   return (
     <ul className="posts">

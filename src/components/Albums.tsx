@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { setAlbums } from '../store/slices/users';
 import { fetchAlbums } from '../store/slices/users/actions';
 import { Id } from '../types/users';
+import Loader from './Loader';
 
 interface IProps {
   userId: Id;
@@ -10,7 +11,7 @@ interface IProps {
 
 const Albums: FC<IProps> = ({ userId }) => {
   const dispatch = useAppDispatch();
-  const { albums, albumsError } = useAppSelector(state => state.users);
+  const { albums, albumsError, isAlbumsLoading } = useAppSelector(state => state.users);
 
   useEffect(() => {
     dispatch(fetchAlbums({ userId }));
@@ -23,6 +24,9 @@ const Albums: FC<IProps> = ({ userId }) => {
   useEffect(() => {
     if (albumsError) console.error(albumsError);
   }, [albumsError]);
+
+  if (isAlbumsLoading) return <Loader />;
+
   return (
     <ul className="albums">
       {albums?.map(album => (
